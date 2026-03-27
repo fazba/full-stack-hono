@@ -4,3 +4,7 @@ compatibility_date = "2025-03-01"
 
 # Cloudflare Workers：Hono 作为默认 fetch handler 导出
 # 部署：在 packages/backend 下执行 pnpm deploy
+[dev]
+# ip = "127.0.0.1"   # 或 "0.0.0.0" 让局域网可访问
+port = 8787
+local_protocol = "http"

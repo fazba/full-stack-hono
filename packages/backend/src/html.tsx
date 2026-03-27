@@ -1,0 +1,42 @@
+import { html } from "hono/html"
+import type { FC } from "hono/jsx"
+
+const DEV_REFRESH_SNIPPET = `
+        import RefreshRuntime from 'http://localhost:5173/@react-refresh'
+
+        RefreshRuntime.injectIntoGlobalHook(window)
+        window.$RefreshReg$ = () => {
+        }
+        window.$RefreshSig$ = () => (type) => type
+        window.__vite_plugin_react_preamble_installed__ = true
+    `
+
+const DevScripts: FC = () => (
+  <>
+    <script type="module" src="http://localhost:5173/@vite/client" />
+    <script
+      type="module"
+      dangerouslySetInnerHTML={{ __html: DEV_REFRESH_SNIPPET }}
+    />
+    <script type="module" src="http://localhost:5173/src/main.tsx" />
+  </>
+)
+
+const ProdScripts: FC = () => <script type="module" src="/src/main.tsx" />
+
+export function documentHtml(dev: boolean) {
+  return html`<!doctype html>${(
+    <html lang="zh-CN">
+      <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>full-stack-hono</title>
+      </head>
+      <body>
+        <div id="root" />
+        {dev ? <DevScripts /> : <ProdScripts />}
+      </body>
+    </html>
+  )}`
+}
