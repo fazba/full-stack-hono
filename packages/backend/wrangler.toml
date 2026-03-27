@@ -1,0 +1,6 @@
+name = "full-stack-hono-backend"
+main = "src/index.ts"
+compatibility_date = "2025-03-01"
+
+# Cloudflare Workers：Hono 作为默认 fetch handler 导出
+# 部署：在 packages/backend 下执行 pnpm deploy

@@ -1,0 +1,19 @@
+{
+  "name": "@full-stack-hono/backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "build": "wrangler deploy --dry-run --outdir=dist",
+    "lint": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "hono": "^4.7.5"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250321.0",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.7.0"
+  }
+}

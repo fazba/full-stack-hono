@@ -1,0 +1,32 @@
+{
+  "name": "full-stack-hono",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "prepare": "simple-git-hooks",
+    "dev": "pnpm -r --parallel run dev",
+    "build": "pnpm -r run build",
+    "lint": "pnpm -r run lint",
+    "format": "pnpm --filter @full-stack-hono/frontend run format"
+  },
+  "devDependencies": {
+    "simple-git-hooks": "^2.13.1",
+    "typescript": "^5.8.3"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "simple-git-hooks",
+      "workerd",
+      "wrangler"
+    ]
+  }
+}

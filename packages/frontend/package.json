@@ -1,0 +1,28 @@
+{
+  "name": "@full-stack-hono/frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "oxlint ./src",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "oxfmt": "^0.42.0",
+    "oxlint": "^1.57.0",
+    "typescript": "^5.8.3",
+    "vite": "^8.0.3"
+  }
+}
