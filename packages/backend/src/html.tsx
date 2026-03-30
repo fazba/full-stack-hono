@@ -26,7 +26,14 @@ const ProdScripts: FC = () => (
   <script
     type="module"
     crossorigin="anonymous"
-    src="https://full-stack-hono.pages.dev"
+    src="https://full-stack-hono.pages.dev/assets/main.js"
+  />
+)
+const ProdStyles: FC = () => (
+  <link
+    rel="stylesheet"
+    crossorigin="anonymous"
+    href="https://full-stack-hono.pages.dev/assets/index.css"
   />
 )
 
@@ -41,6 +48,7 @@ export function documentHtml(dev: boolean) {
             content="width=device-width, initial-scale=1.0"
           />
           <title>full-stack-hono</title>
+          {dev ? null : <ProdStyles />}
         </head>
         <body>
           <div id="root" />
