@@ -2,6 +2,14 @@ name = "full-stack-hono-backend"
 main = "src/index.ts"
 compatibility_date = "2026-03-01"
 
+# 线上部署为 false；本地可在 .dev.vars 中设为 true（如局域网 IP 访问时）
+[vars]
+DEV = "false"
+
+# 根路径下的静态文件（如 /favicon.svg）由 Workers 资源层提供；未匹配到的请求再交给 Hono
+[assets]
+directory = "./public/"
+
 # Cloudflare Workers：Hono 作为默认 fetch handler 导出
 # 部署：在 packages/backend 下执行 pnpm deploy
 [dev]

@@ -22,18 +22,20 @@ const DevScripts: FC = () => (
   </>
 )
 
+const hostname = "full-stack-hono.pages.dev"
+
 const ProdScripts: FC = () => (
   <script
     type="module"
     crossorigin="anonymous"
-    src="https://full-stack-hono.pages.dev/assets/main.js"
+    src={`https://${hostname}/assets/main.js`}
   />
 )
 const ProdStyles: FC = () => (
   <link
     rel="stylesheet"
     crossorigin="anonymous"
-    href="https://full-stack-hono.pages.dev/assets/index.css"
+    href={`https://${hostname}/assets/main.css`}
   />
 )
 
@@ -42,7 +44,7 @@ export function documentHtml(dev: boolean) {
       <html lang="zh-CN">
         <head>
           <meta charset="UTF-8" />
-          <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0"
