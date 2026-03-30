@@ -22,21 +22,30 @@ const DevScripts: FC = () => (
   </>
 )
 
-const ProdScripts: FC = () => <script type="module" src="/src/main.tsx" />
+const ProdScripts: FC = () => (
+  <script
+    type="module"
+    crossorigin="anonymous"
+    src="https://full-stack-hono.pages.dev"
+  />
+)
 
 export function documentHtml(dev: boolean) {
-  return html`<!doctype html>${(
-    <html lang="zh-CN">
-      <head>
-        <meta charset="UTF-8" />
-        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>full-stack-hono</title>
-      </head>
-      <body>
-        <div id="root" />
-        {dev ? <DevScripts /> : <ProdScripts />}
-      </body>
-    </html>
-  )}`
+  return html`<!DOCTYPE html>${(
+      <html lang="zh-CN">
+        <head>
+          <meta charset="UTF-8" />
+          <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+          />
+          <title>full-stack-hono</title>
+        </head>
+        <body>
+          <div id="root" />
+          {dev ? <DevScripts /> : <ProdScripts />}
+        </body>
+      </html>
+    )}`
 }

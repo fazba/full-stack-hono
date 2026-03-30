@@ -3,14 +3,6 @@ import { useEffect, useState } from "react"
 import { fetchApi } from "./utils/fetch"
 import "./App.css"
 
-if (import.meta.hot) {
-  import.meta.hot.accept(() => {
-    import.meta.hot!.data.hmrCount = (import.meta.hot!.data.hmrCount ?? 0) + 1
-    document.getElementById("hmr-count")!.textContent =
-      import.meta.hot!.data.hmrCount.toString()
-  })
-}
-
 type ApiPayload = {
   message: string
   runtime: string
@@ -26,6 +18,7 @@ type ApiJson = {
 export default function App() {
   const [hello, setHello] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [count, setCount] = useState(0)
 
   useEffect(() => {
     let cancelled = false
@@ -57,17 +50,14 @@ export default function App() {
         <Button
           type="primary"
           onClick={() => {
-            import.meta.hot!.send("hmr:increment")
+            setCount(count + 1)
           }}
           disabled={!import.meta.hot}
         >
-          触发一次热更新
+          点击OK
         </Button>
       </p>
-      <p>
-        热更新次数：
-        <span id="hmr-count">0</span>
-      </p>
+      <p>次数：{count}</p>
     </div>
   )
 }
