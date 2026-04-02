@@ -1,6 +1,6 @@
 import type { Context } from "hono"
 import { Hono } from "hono"
-import { jsonSuccess } from "./api-response.js"
+import { apiRouteMiddleware, jsonSuccess } from "./api"
 import { documentHtml } from "./html"
 
 type Bindings = {
@@ -8,6 +8,8 @@ type Bindings = {
 }
 
 const app = new Hono<{ Bindings: Bindings }>()
+
+app.use("/api/*", apiRouteMiddleware)
 
 function isServerDevMode(c: Context<{ Bindings: Bindings }>) {
   if (c.env.DEV === "true") return true
