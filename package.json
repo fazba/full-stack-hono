@@ -11,6 +11,7 @@
     "dev": "pnpm -r --parallel run dev",
     "build": "pnpm -r run build",
     "lint": "pnpm -r run lint",
+    "test": "pnpm --filter @full-stack-hono/backend test",
     "format": "pnpm --filter @full-stack-hono/frontend run format"
   },
   "devDependencies": {
