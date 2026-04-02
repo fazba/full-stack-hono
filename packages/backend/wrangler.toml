@@ -2,8 +2,20 @@ name = "full-stack-hono-backend"
 main = "src/index.ts"
 compatibility_date = "2026-03-01"
 
+# D1：本地 `wrangler d1 migrations apply <DB_NAME> --local`；生产需 `wrangler d1 create` 后替换 database_id
+[[d1_databases]]
+binding = "DB"
+database_name = "full-stack-hono"
+database_id = "f8146fc8-afb8-4964-bb97-f97560d69790"
+
+# Session / OAuth state / 登录限流：密钥与敏感项勿写入此文件，用 wrangler secret 或 Dashboard Secrets 注入
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "f0609dbfb9774aaf91f5fc740a18473d"
+
 # 线上部署为 false；本地可在 .dev.vars 中设为 true（如局域网 IP 访问时）
 [vars]
+DEV = "false"
 APP_ENV = "development"
 APP_NAME = "full-stack-hono"
 APP_VERSION = "0.0.1"

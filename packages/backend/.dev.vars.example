@@ -1,0 +1,10 @@
+# 复制为 .dev.vars 后填写（勿提交 .dev.vars）
+DEV=true
+APP_URL=http://127.0.0.1:8787
+
+# Google OAuth（Google Cloud Console 创建 OAuth 客户端，重定向 URI 填 APP_URL + /api/auth/google/callback）
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+# 可选：密码哈希额外 pepper（与线上 wrangler secret 一致）
+# SESSION_PEPPER=

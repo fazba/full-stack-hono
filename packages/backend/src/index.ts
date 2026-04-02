@@ -1,24 +1,22 @@
-import type { Context } from "hono"
 import { Hono } from "hono"
 import { apiRouteMiddleware, jsonSuccess } from "./api"
+import { isServerDevMode } from "./dev"
+import type { HonoEnv } from "./env"
 import { documentHtml } from "./html"
+import { authRoutes } from "./routes/auth"
 
-type Bindings = {
-  DEV: string
-}
-
-const app = new Hono<{ Bindings: Bindings }>()
+const app = new Hono<HonoEnv>()
 
 app.use("/api/*", apiRouteMiddleware)
 
-function isServerDevMode(c: Context<{ Bindings: Bindings }>) {
-  if (c.env.DEV === "true") return true
-  const host = new URL(c.req.url).hostname
-  return host === "localhost" || host === "127.0.0.1" || host === "[::1]"
-}
+app.route("/api/auth", authRoutes)
 
 app.get("/", c =>
-  c.html(documentHtml(c.req.query("dev") === "true" || isServerDevMode(c))),
+  c.html(
+    documentHtml(
+      c.req.query("dev") === "true" || isServerDevMode(c),
+    ),
+  ),
 )
 
 app.get("/api/", c =>
