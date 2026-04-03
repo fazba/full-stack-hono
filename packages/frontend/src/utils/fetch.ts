@@ -1,5 +1,6 @@
 /**
  * 全局请求入口：所有 HTTP 调用应通过 fetchApi，便于统一处理（头、鉴权、错误、日志等）。
+ * 需携带会话 Cookie（如 `/api/auth/*`）时在调用处传入 `credentials: "include"`。
  */
 export function fetchApi(
   input: RequestInfo | URL,

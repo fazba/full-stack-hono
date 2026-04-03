@@ -50,7 +50,10 @@ async function pickUsername(db: D1Database, base: string): Promise<string> {
       .bind(u)
       .first<{ x: number }>()
     if (!exists) return u
-    u = `${cleaned.slice(0, 20)}_${crypto.randomUUID().replace(/-/g, "").slice(0, 8)}`
+    u = `${cleaned.slice(0, 20)}_${crypto
+      .randomUUID()
+      .replace(/-/g, "")
+      .slice(0, 8)}`
   }
   return `u_${crypto.randomUUID().replace(/-/g, "").slice(0, 24)}`
 }
@@ -289,12 +292,7 @@ authRoutes.get("/google/callback", async c => {
   const id = c.env.GOOGLE_CLIENT_ID
   const secret = c.env.GOOGLE_CLIENT_SECRET
   if (!id || !secret) {
-    return jsonError(
-      c,
-      "未配置 Google OAuth",
-      null,
-      503,
-    )
+    return jsonError(c, "未配置 Google OAuth", null, 503)
   }
   const q = c.req.query()
   const err = q.error
@@ -350,9 +348,5 @@ authRoutes.get("/google/callback", async c => {
       created_at: string
     }>()
   if (!row) return jsonError(c, "用户读取失败", null, 500)
-  return jsonSuccess(
-    c,
-    { user: publicUser(row), token },
-    "ok",
-  )
+  return jsonSuccess(c, { user: publicUser(row), token }, "ok")
 })

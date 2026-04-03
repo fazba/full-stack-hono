@@ -1,16 +1,18 @@
-import { Button } from "antd"
+import { Button, Typography } from "antd"
 import { useEffect, useState } from "react"
-import { fetchApi } from "./utils/fetch"
-import "./App.css"
 
-type ApiJson = {
-  code: number
-  data: Record<string, string>
+import type { ApiEnvelope } from "../types/api"
+import { fetchApi } from "../utils/fetch"
+
+import "../App.css"
+
+type HelloData = {
   message: string
-  success: boolean
+  runtime: string
+  mode: string
 }
 
-export default function App() {
+export function HomePage() {
   const [hello, setHello] = useState<string | null>(null)
   const [mode, setMode] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -21,12 +23,14 @@ export default function App() {
     fetchApi("/api/")
       .then(res => {
         if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
-        return res.json() as Promise<ApiJson>
+        return res.json() as Promise<ApiEnvelope<HelloData>>
       })
       .then(body => {
-        if (!cancelled) {
+        if (!cancelled && body.success) {
           setHello(body.data.message)
           setMode(body.data.mode)
+        } else if (!cancelled) {
+          setError(body.message ?? "请求失败")
         }
       })
       .catch((e: unknown) => {
@@ -39,20 +43,24 @@ export default function App() {
 
   return (
     <div className="app">
-      <h1>Frontend</h1>
-      <p>Vite 8 · React · TypeScript · oxlint · oxfmt</p>
-      <p>
+      <Typography.Title level={2} style={{ marginTop: 0 }}>
+        首页
+      </Typography.Title>
+      <Typography.Paragraph type="secondary">
+        Vite 8 · React · TypeScript · oxlint · oxfmt
+      </Typography.Paragraph>
+      <Typography.Paragraph>
         Backend-Hello:{" "}
         {error !== null ? (
           `错误：${error}`
         ) : hello !== null ? (
-          <p>
+          <>
             {hello} —— 当前服务端环境：{mode}
-          </p>
+          </>
         ) : (
           "加载中…"
         )}
-      </p>
+      </Typography.Paragraph>
       <p>
         <Button
           type="primary"
