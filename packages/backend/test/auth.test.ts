@@ -1,4 +1,4 @@
-import { SELF } from "cloudflare:test"
+import { exports } from "cloudflare:workers"
 import { describe, expect, it } from "vitest"
 
 const base = "http://localhost:8787"
@@ -20,7 +20,7 @@ function uniqueEmail() {
 
 describe("认证 API", () => {
   it("POST /api/auth/register：无效邮箱返回 400", async () => {
-    const res = await SELF.fetch(`${base}/api/auth/register`, {
+    const res = await exports.default.fetch(`${base}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -34,7 +34,7 @@ describe("认证 API", () => {
   })
 
   it("POST /api/auth/register：密码过短返回 400", async () => {
-    const res = await SELF.fetch(`${base}/api/auth/register`, {
+    const res = await exports.default.fetch(`${base}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -46,7 +46,7 @@ describe("认证 API", () => {
   })
 
   it("POST /api/auth/register：非法用户名返回 400", async () => {
-    const res = await SELF.fetch(`${base}/api/auth/register`, {
+    const res = await exports.default.fetch(`${base}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -60,7 +60,7 @@ describe("认证 API", () => {
 
   it("POST /api/auth/register：成功注册并返回 token 与 Cookie", async () => {
     const email = uniqueEmail()
-    const res = await SELF.fetch(`${base}/api/auth/register`, {
+    const res = await exports.default.fetch(`${base}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -84,13 +84,13 @@ describe("认证 API", () => {
   it("POST /api/auth/register：重复邮箱返回 409", async () => {
     const email = uniqueEmail()
     const body = JSON.stringify({ email, password: "password12" })
-    const first = await SELF.fetch(`${base}/api/auth/register`, {
+    const first = await exports.default.fetch(`${base}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body,
     })
     expect(first.status).toBe(201)
-    const dup = await SELF.fetch(`${base}/api/auth/register`, {
+    const dup = await exports.default.fetch(`${base}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body,
@@ -101,14 +101,14 @@ describe("认证 API", () => {
   it("POST /api/auth/login：邮箱登录成功", async () => {
     const email = uniqueEmail()
     const password = "password12"
-    const reg = await SELF.fetch(`${base}/api/auth/register`, {
+    const reg = await exports.default.fetch(`${base}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     })
     expect(reg.status).toBe(201)
 
-    const res = await SELF.fetch(`${base}/api/auth/login`, {
+    const res = await exports.default.fetch(`${base}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ login: email, password }),
@@ -121,12 +121,12 @@ describe("认证 API", () => {
 
   it("POST /api/auth/login：错误密码返回 401", async () => {
     const email = uniqueEmail()
-    await SELF.fetch(`${base}/api/auth/register`, {
+    await exports.default.fetch(`${base}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password: "password12" }),
     })
-    const res = await SELF.fetch(`${base}/api/auth/login`, {
+    const res = await exports.default.fetch(`${base}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ login: email, password: "wrong-password" }),
@@ -135,13 +135,13 @@ describe("认证 API", () => {
   })
 
   it("GET /api/auth/me：无 Cookie 返回 401", async () => {
-    const res = await SELF.fetch(`${base}/api/auth/me`)
+    const res = await exports.default.fetch(`${base}/api/auth/me`)
     expect(res.status).toBe(401)
   })
 
   it("GET /api/auth/me：携带 sid 返回当前用户", async () => {
     const email = uniqueEmail()
-    const reg = await SELF.fetch(`${base}/api/auth/register`, {
+    const reg = await exports.default.fetch(`${base}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password: "password12" }),
@@ -149,7 +149,7 @@ describe("认证 API", () => {
     const regJson = await readJson<{ token: string }>(reg)
     const token = regJson.data.token
 
-    const me = await SELF.fetch(`${base}/api/auth/me`, {
+    const me = await exports.default.fetch(`${base}/api/auth/me`, {
       headers: { Cookie: `sid=${token}` },
     })
     expect(me.status).toBe(200)
@@ -159,7 +159,7 @@ describe("认证 API", () => {
 
   it("POST /api/auth/logout：清除会话", async () => {
     const email = uniqueEmail()
-    const reg = await SELF.fetch(`${base}/api/auth/register`, {
+    const reg = await exports.default.fetch(`${base}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password: "password12" }),
@@ -167,27 +167,27 @@ describe("认证 API", () => {
     const { data } = await readJson<{ token: string }>(reg)
     const token = data.token
 
-    const out = await SELF.fetch(`${base}/api/auth/logout`, {
+    const out = await exports.default.fetch(`${base}/api/auth/logout`, {
       method: "POST",
       headers: { Cookie: `sid=${token}` },
     })
     expect(out.status).toBe(200)
 
-    const me = await SELF.fetch(`${base}/api/auth/me`, {
+    const me = await exports.default.fetch(`${base}/api/auth/me`, {
       headers: { Cookie: `sid=${token}` },
     })
     expect(me.status).toBe(401)
   })
 
   it("GET /api/auth/google：未配置 OAuth 时返回 503", async () => {
-    const res = await SELF.fetch(`${base}/api/auth/google`)
+    const res = await exports.default.fetch(`${base}/api/auth/google`)
     expect(res.status).toBe(503)
     const j = await readJson<null>(res)
     expect(j.success).toBe(false)
   })
 
   it("未允许的 HTTP 方法对 /api/auth/me 返回 405", async () => {
-    const res = await SELF.fetch(`${base}/api/auth/me`, { method: "DELETE" })
+    const res = await exports.default.fetch(`${base}/api/auth/me`, { method: "DELETE" })
     expect(res.status).toBe(405)
   })
 })
