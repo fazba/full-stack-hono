@@ -15,6 +15,7 @@ app.get("/", c =>
   c.html(
     documentHtml(
       c.req.query("dev") === "true" || isServerDevMode(c),
+      c.req.query("pre"),
     ),
   ),
 )

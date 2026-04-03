@@ -22,24 +22,25 @@ const DevScripts: FC = () => (
   </>
 )
 
-const hostname = "full-stack-hono.pages.dev"
-
-const ProdScripts: FC = () => (
-  <script
-    type="module"
-    crossorigin="anonymous"
-    src={`https://${hostname}/assets/main.js`}
-  />
-)
-const ProdStyles: FC = () => (
-  <link
-    rel="stylesheet"
-    crossorigin="anonymous"
-    href={`https://${hostname}/assets/main.css`}
-  />
-)
-
-export function documentHtml(dev: boolean) {
+export function documentHtml(dev: boolean, pre?: string) {
+  let hostname = "full-stack-hono.pages.dev"
+  if (pre) {
+    hostname = pre?.length > 0 ? `${pre}.${hostname}` : hostname
+  }
+  const ProdScripts: FC = () => (
+    <script
+      type="module"
+      crossorigin="anonymous"
+      src={`https://${hostname}/assets/main.js`}
+    />
+  )
+  const ProdStyles: FC = () => (
+    <link
+      rel="stylesheet"
+      crossorigin="anonymous"
+      href={`https://${hostname}/assets/main.css`}
+    />
+  )
   return html`<!DOCTYPE html>${(
       <html lang="zh-CN">
         <head>
